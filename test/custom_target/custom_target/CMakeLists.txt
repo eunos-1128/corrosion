@@ -11,6 +11,8 @@ if(NOT "${Rust_CARGO_TARGET}" MATCHES ".json")
     )
 endif()
 
+find_package(Threads REQUIRED)
+
 corrosion_import_crate(MANIFEST_PATH rust/Cargo.toml)
 corrosion_set_cargo_flags(rust_lib "-Zbuild-std")
 # custom target triples require nightly features
@@ -20,4 +22,4 @@ corrosion_set_cargo_flags(rust-bin "-Zbuild-std")
 corrosion_set_env_vars(rust-bin RUSTC_BOOTSTRAP=1)
 
 add_executable(test-exe main.cpp)
-target_link_libraries(test-exe PUBLIC rust_lib)
+target_link_libraries(test-exe PUBLIC rust_lib Threads::Threads)
